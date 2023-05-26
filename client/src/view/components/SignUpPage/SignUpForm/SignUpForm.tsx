@@ -1,41 +1,41 @@
-import { Field, Form, Formik } from 'formik';
-import { SnackBar, TextFormField } from '../../Common';
-import { Box, Button } from '@mui/material';
-import { ROUTER_PATHS, signIn, signUp, signUpSchema, User } from '../../../../data';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Field, Form, Formik } from 'formik';
+import { ROUTER_PATHS, signIn, signUp, signUpSchema, User } from '../../../../data';
+import { Box, Button, Typography } from '@mui/material';
+import { TextFormField } from '../../Common';
 
 export const SignUpForm = () => {
+  const initialValues = {
+    username: '',
+    email: '',
+    password: '',
+  };
+
   const navigate = useNavigate();
   const [message, setMessage] = useState<string>('');
 
   return (
     <>
-      <SnackBar message={message} />
       <Formik
         validationSchema={signUpSchema}
-        initialValues={{
-          username: '',
-          email: '',
-          password: '',
-        }}
-        onSubmit={async (values) => {
+        initialValues={initialValues}
+        onSubmit={async (values, formikHelpers) => {
           const signInValue: Pick<User, 'email' | 'password'> = { email: values.email, password: values.password };
+          const signUpRes = await signUp(values);
+          const signInRes = await signIn(signInValue);
 
-          await signUp(values);
+          if (signUpRes) {
+            setMessage(signUpRes);
+          }
 
-          signIn(signInValue)
-            .then((i) => {
-              if (i) {
-                setMessage(i.message);
-                navigate(ROUTER_PATHS.USERS);
-              }
-            })
-            .catch((e) => console.log(e));
+          if (signInRes) {
+            setMessage(signInRes.message);
+            navigate(ROUTER_PATHS.USERS);
+          }
         }}
       >
         {(f) => {
-          const { isSubmitting, isValid } = f;
           return (
             <Form>
               <Box className={'flex flex-col gap-2'}>
@@ -47,7 +47,7 @@ export const SignUpForm = () => {
                 type={'submit'}
                 variant={'contained'}
                 sx={{ width: '40%', mt: 2 }}
-                disabled={!isValid || isSubmitting}
+                disabled={!f.isValid || f.isSubmitting}
               >
                 Submit
               </Button>
@@ -55,6 +55,8 @@ export const SignUpForm = () => {
           );
         }}
       </Formik>
+
+      <Typography className={'text-red-600 text-3xl'}>{message}</Typography>
     </>
   );
 };

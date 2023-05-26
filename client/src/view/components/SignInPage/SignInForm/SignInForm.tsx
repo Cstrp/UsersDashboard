@@ -1,7 +1,7 @@
 import { Field, Form, Formik } from 'formik';
 import { ROUTER_PATHS, signIn, signInSchema, STATUS, User } from '../../../../data';
-import { SnackBar, TextFormField } from '../../Common';
-import { Box, Button } from '@mui/material';
+import { TextFormField } from '../../Common';
+import { Box, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,25 +16,23 @@ export const SignInForm = () => {
 
   return (
     <>
-      <SnackBar message={message} />
       <Formik
         validationSchema={signInSchema}
         initialValues={initialValues}
-        onSubmit={(values, formikHelpers) => {
-          signIn(values).then((i) => {
-            if (i) {
-              setMessage(i.message);
+        onSubmit={async (value, formikHelpers) => {
+          const res = await signIn(value);
+          if (res) {
+            setMessage(res.message);
 
-              if (i.status === STATUS.ACTIVE) {
-                navigate(ROUTER_PATHS.USERS);
-              }
+            if (res.status === STATUS.ACTIVE) {
+              navigate(ROUTER_PATHS.USERS);
+            } else {
+              navigate(ROUTER_PATHS.DEFAULT);
             }
-          });
-          formikHelpers.setSubmitting(false);
+          }
         }}
       >
         {(f) => {
-          const { isSubmitting, isValid } = f;
           return (
             <Form>
               <Box className={'flex flex-col gap-2'}>
@@ -44,7 +42,7 @@ export const SignInForm = () => {
               <Button
                 type={'submit'}
                 variant={'contained'}
-                disabled={!isValid || isSubmitting}
+                disabled={!f.isValid || f.isSubmitting}
                 sx={{ width: '40%', mt: 2 }}
               >
                 Submit
@@ -53,6 +51,7 @@ export const SignInForm = () => {
           );
         }}
       </Formik>
+      <Typography className={'text-red-600 text-3xl'}>{message}</Typography>
     </>
   );
 };

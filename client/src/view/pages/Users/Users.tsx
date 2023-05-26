@@ -1,6 +1,6 @@
 import { UsersTable } from '../../components';
 import { Box } from '@mui/material';
-import { getItem, getUsers, ROUTER_PATHS, User } from '../../../data';
+import { getItem, getUsers, User } from '../../../data';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ export const Users = () => {
     if (token) {
       fetchData();
     } else {
-      navigate(ROUTER_PATHS.DEFAULT);
+      navigate('https://iusersdashboard.netlify.app/');
     }
   }, []);
 

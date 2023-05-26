@@ -5,6 +5,7 @@ import { STATUS } from '../enums';
 const getUsers = async () => {
   try {
     const res = await api.get<UserData>('/users');
+
     return res.data;
   } catch (error) {
     console.error(`Error while getting users ${error}`);
