@@ -17,7 +17,7 @@ const sql = mysql.createConnection({
   database: DB_DATABASE,
 });
 
-app.use(cors({ origin: 'https://iusersdashboard.netlify.app', credentials: false }));
+app.use(cors({ origin: '*', credentials: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(ROUTES.DEFAULT, checkRouter);

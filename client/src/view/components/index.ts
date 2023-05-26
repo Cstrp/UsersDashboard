@@ -1,4 +1,3 @@
-export * from './Common/index';
-export * from './SignInPage/index';
-export * from './SignUpPage/index';
-export * from './UsersPage/index';
+export * from './common/index';
+export * from './sign_in/index';
+export * from './sign_up/index';
