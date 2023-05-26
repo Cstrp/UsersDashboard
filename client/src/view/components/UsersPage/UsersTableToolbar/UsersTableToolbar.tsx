@@ -2,14 +2,21 @@ import { Box, IconButton } from '@mui/material';
 import { Delete, Lock, LockOpen } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { UsersTableToolbarProps } from './UsersTableToolbarProps';
-import { clear, currentStatus, deleteUser, getItem, ROUTER_PATHS, STATUS, updateStatus, userId } from '../../../../data';
+import { clear, deleteUser, getItem, ROUTER_PATHS, STATUS, updateStatus } from '../../../../data';
 import { useNavigate } from 'react-router-dom';
 
 export const UsersTableToolbar = ({ data, selectedUsers, setUsers, selectedUsersCount }: UsersTableToolbarProps) => {
   const navigate = useNavigate();
+  const currentStatus = getItem('status');
   const [status, setStatus] = useState<STATUS>(currentStatus);
 
   useEffect(() => {
+    const userId = getItem('id');
+
+    if (selectedUsersCount.includes(userId) && data.row.status !== status) {
+      navigate(ROUTER_PATHS.DEFAULT);
+    }
+
     if (userId && data && data.id === userId && data.row.status !== status) {
       navigate(ROUTER_PATHS.DEFAULT);
       clear();

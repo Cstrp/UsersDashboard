@@ -1,9 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { getItem } from './localStorage';
-import {STATUS} from "../enums";
-import { currentStatus, token } from './ls';
+import { STATUS } from '../enums';
 
-export const API_URL = 'http://localhost:3060/api';
+export const API_URL = 'https://usersdashboard-production.up.railway.app/api';
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -16,9 +15,11 @@ api.interceptors.response.use(
 );
 
 api.interceptors.request.use((config) => {
+  const token = getItem('token');
+  const status = getItem('status');
 
-  if (token)  config.headers['Authorization'] = `${token}`;
-  if (currentStatus && currentStatus !== STATUS.DEACTIVATED) config.headers['status'] = `${currentStatus}`;
+  if (token) config.headers['Authorization'] = `${token}`;
+  if (status && status !== STATUS.DEACTIVATED) config.headers['status'] = `${status}`;
 
   return config;
 });

@@ -1,12 +1,13 @@
 import { UsersTable } from '../../components';
 import { Box } from '@mui/material';
-import { getUsers, ROUTER_PATHS, token, User } from '../../../data';
+import { getItem, getUsers, ROUTER_PATHS, User } from '../../../data';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
+  const token = getItem('token');
 
   useEffect(() => {
     const fetchData = async () => {
