@@ -45,17 +45,6 @@ export const UsersTableToolbar = ({ row, selectedRows, allSelectedRows, setUsers
         navigate(ROUTER_PATHS.HOME);
       }
     }
-
-    // if (row) {
-    //   if (selectedRows.includes(data.id) && row.row.status !== status) {
-    //     navigate(ROUTER_PATHS.HOME);
-    //   }
-
-    //   if (data.id && row && row.id === data.id && row.row.status !== status) {
-    //     navigate(ROUTER_PATHS.HOME);
-    //     clearStorage();
-    //   }
-    // }
   }, []);
 
   return (
