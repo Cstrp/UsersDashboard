@@ -12,6 +12,19 @@ export const UsersTableToolbar = ({ row, selectedRows, setUsers }: UsersTableToo
   const [open, setOpen] = useState<boolean>(false);
   const [status, setStatus] = useState<string>(data.status);
 
+  useEffect(() => {
+    if (row) {
+      if (selectedRows.includes(data.id) && row.row.status !== status) {
+        navigate(ROUTER_PATHS.HOME);
+      }
+
+      if (data.id && row && row.id === data.id && row.row.status !== status) {
+        navigate(ROUTER_PATHS.HOME);
+        clearStorage();
+      }
+    }
+  }, [data, status]);
+
   const handleStatusChange = (status: STATUS) => {
     const updated = { status, ids: selectedRows as number[] };
     update_status({ updated, setMessage });
@@ -26,28 +39,18 @@ export const UsersTableToolbar = ({ row, selectedRows, setUsers }: UsersTableToo
   };
 
   const handleDelete = () => {
-    if (data && selectedRows.includes(data.id)) {
-      navigate(ROUTER_PATHS.HOME);
-      clearStorage();
-    }
-
     delete_user({ ids: selectedRows as number[] }, setMessage);
     setUsers((prevState) => prevState.filter((user) => !selectedRows.includes(user.id!)));
     setOpen(true);
-  };
 
-  useEffect(() => {
-    if (row) {
-      if (selectedRows.includes(data.id) && row.row.status !== status) {
-        navigate(ROUTER_PATHS.HOME);
-      }
-
-      if (data.id && row && row.id === data.id && row.row.status !== status) {
-        navigate(ROUTER_PATHS.HOME);
-        clearStorage();
-      }
+    if (data && selectedRows.includes(data.id)) {
+      navigate(ROUTER_PATHS.HOME);
     }
-  }, [data, status]);
+
+    setTimeout(() => {
+      clearStorage();
+    }, 5000);
+  };
 
   return (
     <Box className={'py-5 flex flex-row gap-5'}>
