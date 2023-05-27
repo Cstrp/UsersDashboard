@@ -8,13 +8,17 @@ import { useNavigate } from 'react-router-dom';
 
 export const SignInForm = () => {
   const [message, setMessage] = useState<string>('');
+  const [open, setOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   return (
     <>
       <Formik
         initialValues={initialValues}
-        onSubmit={(values, formikHelpers) => sign_in(values, navigate, formikHelpers, setMessage)}
+        onSubmit={(values, formikHelpers) => {
+          sign_in(values, navigate, formikHelpers, setMessage);
+          setOpen(!open);
+        }}
         validationSchema={signInSchema}
       >
         {(f) => (
@@ -27,8 +31,12 @@ export const SignInForm = () => {
           </Form>
         )}
       </Formik>
-      <Snackbar open={!!message} autoHideDuration={3000}>
-        <Alert variant={'filled'} severity={message === 'Authorization successful.' ? 'success' : 'error'}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={() => setOpen(!open)}>
+        <Alert
+          variant={'filled'}
+          severity={message === 'Authorization successful.' ? 'success' : 'error'}
+          onClose={() => setOpen(!open)}
+        >
           {message}
         </Alert>
       </Snackbar>
