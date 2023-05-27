@@ -5,5 +5,6 @@ import { User } from '../../../../data';
 export interface UsersTableToolbarProps {
   row: GridRowParams;
   selectedRows: GridRowSelectionModel;
+  allSelectedRows: boolean;
   setUsers: Dispatch<SetStateAction<User[]>>;
 }

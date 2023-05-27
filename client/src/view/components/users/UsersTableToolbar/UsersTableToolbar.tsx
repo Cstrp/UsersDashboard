@@ -3,27 +3,14 @@ import { Delete, Lock, LockOpen } from '@mui/icons-material';
 import { UsersTableToolbarProps } from './usersTableToolbarProps';
 import { clearStorage, delete_user, getItem, ROUTER_PATHS, STATUS, update_status } from '../../../../data';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
-export const UsersTableToolbar = ({ row, selectedRows, setUsers }: UsersTableToolbarProps) => {
+export const UsersTableToolbar = ({ row, selectedRows, allSelectedRows, setUsers }: UsersTableToolbarProps) => {
   const data = getItem('data');
   const navigate = useNavigate();
   const [message, setMessage] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const [status, setStatus] = useState<string>(data.status);
-
-  useEffect(() => {
-    if (row) {
-      if (selectedRows.includes(data.id) && row.row.status !== status) {
-        navigate(ROUTER_PATHS.HOME);
-      }
-
-      if (data.id && row && row.id === data.id && row.row.status !== status) {
-        navigate(ROUTER_PATHS.HOME);
-        clearStorage();
-      }
-    }
-  }, [data, status]);
 
   const handleStatusChange = (status: STATUS) => {
     const updated = { status, ids: selectedRows as number[] };
@@ -33,8 +20,8 @@ export const UsersTableToolbar = ({ row, selectedRows, setUsers }: UsersTableToo
     );
     setOpen(true);
 
-    if (row && data.id === row.id!) {
-      setStatus(status);
+    if (selectedRows.includes(data.id) && data.status !== status) {
+      navigate(ROUTER_PATHS.HOME);
     }
   };
 
@@ -43,7 +30,7 @@ export const UsersTableToolbar = ({ row, selectedRows, setUsers }: UsersTableToo
     setUsers((prevState) => prevState.filter((user) => !selectedRows.includes(user.id!)));
     setOpen(true);
 
-    if (data && selectedRows.includes(data.id)) {
+    if (allSelectedRows && selectedRows.includes(data.id)) {
       navigate(ROUTER_PATHS.HOME);
     }
 
@@ -51,6 +38,25 @@ export const UsersTableToolbar = ({ row, selectedRows, setUsers }: UsersTableToo
       clearStorage();
     }, 5000);
   };
+
+  useEffect(() => {
+    if (row) {
+      if (allSelectedRows && selectedRows.includes(data.id) && row.row.id !== status) {
+        navigate(ROUTER_PATHS.HOME);
+      }
+    }
+
+    // if (row) {
+    //   if (selectedRows.includes(data.id) && row.row.status !== status) {
+    //     navigate(ROUTER_PATHS.HOME);
+    //   }
+
+    //   if (data.id && row && row.id === data.id && row.row.status !== status) {
+    //     navigate(ROUTER_PATHS.HOME);
+    //     clearStorage();
+    //   }
+    // }
+  }, []);
 
   return (
     <Box className={'py-5 flex flex-row gap-5'}>

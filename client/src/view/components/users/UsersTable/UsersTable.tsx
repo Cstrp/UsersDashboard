@@ -12,7 +12,12 @@ export const UsersTable = ({ users, setUsers }: UsersTableProps) => {
 
   return (
     <Box>
-      <UsersTableToolbar row={row!} selectedRows={selectedRows} setUsers={setUsers} />
+      <UsersTableToolbar
+        row={row!}
+        selectedRows={selectedRows}
+        setUsers={setUsers}
+        allSelectedRows={selectedRows.length === users.length}
+      />
       <DataGrid
         sx={{ width: '100%', height: '600px' }}
         columns={col}
