@@ -1,7 +1,7 @@
 import { Alert, Box, Snackbar } from '@mui/material';
 import { UsersTable } from '../../components';
 import { useEffect, useState } from 'react';
-import { API, User, UserData } from '../../../data';
+import { api, User, UserData } from '../../../data';
 
 export const UsersDashboard = () => {
   const [message, setMessage] = useState<string>('');
@@ -11,7 +11,7 @@ export const UsersDashboard = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await API.get<UserData>('/users');
+        const res = await api.get<UserData>('/users');
 
         if (res) {
           setMessage(res.data.message);

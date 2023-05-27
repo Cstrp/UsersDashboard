@@ -1,6 +1,6 @@
 import { Message, SignUpValues } from '../types';
 import { Dispatch, SetStateAction } from 'react';
-import { API } from './api_interceptor';
+import { api } from './api_interceptor';
 import { FormikHelpers } from 'formik';
 
 export const sign_up = async (
@@ -9,7 +9,7 @@ export const sign_up = async (
   setMessage?: Dispatch<SetStateAction<string>>,
 ) => {
   try {
-    const res = await API.post<Message>('/sign_up', values);
+    const res = await api.post<Message>('/sign_up', values);
 
     if (res) {
       setMessage!(res.data.message);

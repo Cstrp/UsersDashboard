@@ -1,4 +1,4 @@
-import { API } from './api_interceptor';
+import { api } from './api_interceptor';
 import { SignInData, SignInValues } from '../types';
 import { FormikHelpers } from 'formik';
 import { Dispatch, SetStateAction } from 'react';
@@ -13,7 +13,7 @@ export const sign_in = async (
   setMessage?: Dispatch<SetStateAction<string>>,
 ) => {
   try {
-    const res = await API.post<SignInData>('/sign_in', value);
+    const res = await api.post<SignInData>('/sign_in', value);
 
     if (res) {
       setMessage!(res.data.message);

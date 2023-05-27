@@ -2,17 +2,17 @@ import axios from 'axios';
 import { API_URL } from '.';
 import { getItem } from '../utils';
 
-export const API = axios.create({
+export const api = axios.create({
   baseURL: API_URL,
   headers: { 'Content-Type': 'application/json' },
 });
 
-API.interceptors.response.use(
+api.interceptors.response.use(
   (value) => value,
   (error) => Promise.reject(error),
 );
 
-API.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => {
   const data = getItem('data');
 
   if (data) {

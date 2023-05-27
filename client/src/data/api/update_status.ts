@@ -1,6 +1,6 @@
 import { STATUS } from '../enums';
 import { Dispatch, SetStateAction } from 'react';
-import { API } from './api_interceptor';
+import { api } from './api_interceptor';
 import { Message } from '../types';
 
 export const update_status = async ({
@@ -11,7 +11,7 @@ export const update_status = async ({
   setMessage?: Dispatch<SetStateAction<string>>;
 }) => {
   try {
-    const res = await API.put<Message>('/users/update', updated);
+    const res = await api.put<Message>('/users/update', updated);
 
     if (res) setMessage!(res.data.message);
   } catch (error: any) {

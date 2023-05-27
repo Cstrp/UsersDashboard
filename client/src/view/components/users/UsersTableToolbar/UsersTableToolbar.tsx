@@ -26,25 +26,26 @@ export const UsersTableToolbar = ({ row, selectedRows, setUsers }: UsersTableToo
   };
 
   const handleDelete = () => {
+    if (data && selectedRows.includes(data.id)) {
+      navigate(ROUTER_PATHS.HOME);
+      clearStorage();
+    }
+
     delete_user({ ids: selectedRows as number[] }, setMessage);
     setUsers((prevState) => prevState.filter((user) => !selectedRows.includes(user.id!)));
     setOpen(true);
-
-    const data = getItem('data');
-
-    if (selectedRows.includes(data.id)) {
-      navigate(ROUTER_PATHS.HOME);
-    }
   };
 
   useEffect(() => {
-    if (selectedRows.includes(data.id) && row.row.status !== status) {
-      navigate(ROUTER_PATHS.HOME);
-    }
+    if (row) {
+      if (selectedRows.includes(data.id) && row.row.status !== status) {
+        navigate(ROUTER_PATHS.HOME);
+      }
 
-    if (data.id && row && row.id === data.id && row.row.status !== status) {
-      navigate(ROUTER_PATHS.HOME);
-      clearStorage();
+      if (data.id && row && row.id === data.id && row.row.status !== status) {
+        navigate(ROUTER_PATHS.HOME);
+        clearStorage();
+      }
     }
   }, [data, status]);
 

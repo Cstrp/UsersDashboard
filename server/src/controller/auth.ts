@@ -18,7 +18,7 @@ const signIn = async (req: Request, res: Response) => {
 
       const user = result[0];
 
-      const correctPassword = checkPassword(password, user.password);
+      const correctPassword = checkPassword(password, user?.password);
       const updatedData = moment().unix();
 
       if (correctPassword)
