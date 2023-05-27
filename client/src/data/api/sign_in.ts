@@ -27,6 +27,6 @@ export const sign_in = async (
     helpers!.setSubmitting(false);
     helpers!.resetForm();
   } catch (error: any) {
-    setMessage!(error.message);
+    setMessage!(error.response.data.message);
   }
 };

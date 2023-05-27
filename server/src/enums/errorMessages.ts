@@ -6,7 +6,7 @@ export const enum MESSAGES {
   ALREADY_EXIST = 'A user with the same username or email already exists.',
   SUCCESS_CREATE_USER = 'New user created successfully.',
   FAILED_UPDATE_USER_LAST_VISIT = 'Failed to update user last visit.',
-  INVALID_REQUEST = 'Invalid request. Maybe user is not created',
+  INVALID_REQUEST = 'Error! User not created or disabled.',
   UNAUTHORIZED = 'Unauthorized access.',
   INVALID_TOKEN = 'Invalid token.',
   FAILED = 'Operation failed.',
