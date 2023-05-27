@@ -1,22 +1,37 @@
-import { SignInValues } from '../../../../data/types';
-import { Field, Form, Formik, FormikHelpers } from 'formik';
+import { sign_in, signInSchema } from '../../../../data';
+import { Field, Form, Formik } from 'formik';
 import { TextFormField } from '../../common';
-import { Button } from '@mui/material';
-import { signInSchema } from '../../../../data/utils/validationSchema';
+import { Alert, Button, Snackbar } from '@mui/material';
 import { initialValues } from './initialValues';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const SignInForm = () => {
-  const handleSubmit = (formData: SignInValues, helpers: FormikHelpers<SignInValues>) => {};
+  const [message, setMessage] = useState<string>('');
+  const navigate = useNavigate();
 
   return (
     <>
-      <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signInSchema}>
-        <Form className={'h-full flex flex-col justify-between'}>
-          <Field name={''} component={TextFormField} placeholder={'Type your email...'} />
-          <Field name={''} component={TextFormField} placeholder={'Type your password...'} />
-          <Button type={'submit'}>Submit</Button>
-        </Form>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values, formikHelpers) => sign_in(values, navigate, formikHelpers, setMessage)}
+        validationSchema={signInSchema}
+      >
+        {(f) => (
+          <Form className={'h-full flex flex-col justify-between'}>
+            <Field name={'email'} component={TextFormField} placeholder={'Type your email...'} />
+            <Field name={'password'} component={TextFormField} placeholder={'Type your password...'} />
+            <Button type={'submit'} variant={'contained'} disabled={!f.isValid || f.isSubmitting}>
+              Submit
+            </Button>
+          </Form>
+        )}
       </Formik>
+      <Snackbar open={!!message} autoHideDuration={3000}>
+        <Alert variant={'filled'} severity={message === 'Authorization successful.' ? 'success' : 'error'}>
+          {message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

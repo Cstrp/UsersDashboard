@@ -1,6 +1,6 @@
-import { SignUpData } from './signUpData';
+import { SignUpValues } from '../../../../data';
 
-export const initialValues: SignUpData = {
+export const initialValues: SignUpValues = {
   username: '',
   email: '',
   password: '',

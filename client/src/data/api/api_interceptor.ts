@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '.';
+import { getItem } from '../utils';
 
 export const API = axios.create({
   baseURL: API_URL,
@@ -12,5 +13,11 @@ API.interceptors.response.use(
 );
 
 API.interceptors.request.use((config) => {
+  const data = getItem('data');
+
+  if (data) {
+    config.headers['Authorization'] = data.token;
+    config.headers['status'] = data.status;
+  }
   return config;
 });

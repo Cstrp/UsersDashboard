@@ -5,7 +5,7 @@ export const setItem = (key: string, value: unknown): void => {
 export const getItem = (key: string) => {
   const value = window.localStorage.getItem(key);
 
-  return JSON.parse(value || '');
+  return JSON.parse(value || '{}');
 };
 
 export const clearStorage = () => {
